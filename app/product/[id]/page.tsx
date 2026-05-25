@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { use } from "react";
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 
 const products = {
@@ -28,8 +29,9 @@ export default function ProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-
   const { addToCart } = useCart();
+
+  const [added, setAdded] = useState(false);
 
   const product = products[id as keyof typeof products];
 
@@ -47,13 +49,19 @@ export default function ProductPage({
       name: product.name,
       price: product.price,
     });
+
+    setAdded(true);
+
+    setTimeout(() => {
+      setAdded(false);
+    }, 2000);
   };
 
   return (
-    <main className="min-h-screen bg-black text-white px-10 py-20">
+    <main className="min-h-screen bg-black text-white px-6 md:px-10 py-20">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16">
 
-        <div className="relative h-[600px] overflow-hidden bg-zinc-900">
+        <div className="relative h-[400px] md:h-[600px] overflow-hidden bg-zinc-900">
           <Image
             src={product.image}
             alt={product.name}
@@ -68,7 +76,7 @@ export default function ProductPage({
             Madcore Drop
           </p>
 
-          <h1 className="text-6xl font-black mb-6">
+          <h1 className="text-4xl md:text-6xl font-black mb-6">
             {product.name}
           </h1>
 
@@ -76,7 +84,7 @@ export default function ProductPage({
             Engineered for rebellion.
           </p>
 
-          <p className="text-3xl mb-10">
+          <p className="text-2xl md:text-3xl mb-10">
             EGP {product.price}
           </p>
 
@@ -84,7 +92,7 @@ export default function ProductPage({
             onClick={handleAddToCart}
             className="px-8 py-4 border border-violet-500 hover:bg-violet-600 transition uppercase tracking-widest"
           >
-            Add To Cart
+            {added ? "Added ✓" : "Add To Cart"}
           </button>
 
         </div>
