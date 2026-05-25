@@ -20,6 +20,7 @@ type CartContextType = {
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
   removeFromCart: (id: string) => void;
+  clearCart: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(
@@ -77,6 +78,10 @@ export function CartProvider({
     );
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -85,6 +90,7 @@ export function CartProvider({
         increaseQuantity,
         decreaseQuantity,
         removeFromCart,
+        clearCart,
       }}
     >
       {children}

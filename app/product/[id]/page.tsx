@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { use } from "react";
-import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
 const products = {
@@ -30,7 +29,6 @@ export default function ProductPage({
 }) {
   const { id } = use(params);
 
-  const router = useRouter();
   const { addToCart } = useCart();
 
   const product = products[id as keyof typeof products];
@@ -49,8 +47,6 @@ export default function ProductPage({
       name: product.name,
       price: product.price,
     });
-
-    router.push("/cart");
   };
 
   return (
