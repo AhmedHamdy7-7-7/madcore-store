@@ -1,78 +1,84 @@
-import Image from "next/image";
+"use client";
 
-const drops = [
-  {
-    title: "DROP 01",
-    subtitle: "The Beginning of Disorder",
-    image: "/brand/product1.jpg",
-    status: "SOLD OUT",
-  },
-  {
-    title: "DROP 02",
-    subtitle: "Shadow Transmission",
-    image: "/brand/product2.jpg",
-    status: "LIVE",
-  },
-  {
-    title: "DROP 03",
-    subtitle: "Controlled Collapse",
-    image: "/brand/product3.jpg",
-    status: "COMING SOON",
-  },
-];
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { products } from "@/data/products";
 
 export default function ArchivePage() {
   return (
-    <main className="bg-black text-white min-h-screen pt-24">
+    <main className="bg-black text-white pt-28 min-h-screen">
 
       {/* Header */}
-      <section className="text-center py-20 px-6">
-        <p className="text-[#551993] uppercase tracking-[0.5em] mb-6">
-          Legacy
-        </p>
+      <section className="text-center py-20 px-8">
 
-        <h1 className="text-7xl font-black uppercase">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-[#551993] uppercase tracking-[0.45em] mb-6"
+        >
+          Transmission History
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 35 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-6xl md:text-8xl font-black uppercase"
+        >
           ARCHIVE
-        </h1>
+        </motion.h1>
 
-        <p className="text-zinc-400 max-w-2xl mx-auto mt-8 text-lg">
-          Every drop is a timestamp in the evolution of chaos.
-        </p>
       </section>
 
       {/* Drops */}
-      <section className="max-w-6xl mx-auto px-8 pb-32 space-y-16">
+      <section className="max-w-7xl mx-auto px-8 pb-32 space-y-28">
 
-        {drops.map((drop, index) => (
-          <div
-            key={index}
-            className="grid md:grid-cols-2 gap-10 items-center border border-white/10 p-8 hover:border-[#551993] transition"
+        {products.map((product, index) => (
+          <motion.div
+            key={product.id}
+            initial={{ opacity: 0, y: 45 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9 }}
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 gap-14 items-center"
           >
 
-            <div className="relative h-[500px]">
+            {/* Image */}
+            <div className="relative h-[70vh] overflow-hidden group bg-zinc-950">
               <Image
-                src={drop.image}
-                alt={drop.title}
+                src={product.image}
+                alt={product.name}
                 fill
-                className="object-cover"
+                sizes="50vw"
+                className="object-contain scale-100 group-hover:scale-105 transition-transform duration-700"
               />
+
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition duration-700" />
             </div>
 
+            {/* Content */}
             <div>
-              <p className="text-[#551993] uppercase tracking-[0.4em] mb-4">
-                {drop.status}
+
+              <p className="text-[#551993] uppercase tracking-[0.45em] text-sm mb-5">
+                Drop 0{index + 1}
               </p>
 
-              <h2 className="text-5xl font-black uppercase mb-6">
-                {drop.title}
+              <h2 className="text-5xl md:text-6xl font-black uppercase mb-6">
+                {product.name}
               </h2>
 
-              <p className="text-zinc-400 text-xl">
-                {drop.subtitle}
+              <p className="text-zinc-400 text-lg leading-relaxed mb-8">
+                {product.description}
               </p>
+
+              <p className="uppercase tracking-[0.35em] text-white">
+                {product.status}
+              </p>
+
             </div>
 
-          </div>
+          </motion.div>
         ))}
 
       </section>

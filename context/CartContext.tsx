@@ -5,21 +5,27 @@ import {
   useContext,
   useState,
   ReactNode,
+  useEffect,
 } from "react";
 
 type CartItem = {
   id: string;
   name: string;
   price: number;
+  image?: string;
+  size?: string;
   quantity: number;
 };
 
 type CartContextType = {
   cart: CartItem[];
-  addToCart: (item: Omit<CartItem, "quantity">) => void;
-  increaseQuantity: (id: string) => void;
-  decreaseQuantity: (id: string) => void;
-  removeFromCart: (id: string) => void;
+  addToCart: (
+    product: Omit<CartItem, "quantity">,
+    quantity?: number
+  ) => void;
+  increaseQuantity: (id: string, size?: string) => void;
+  decreaseQuantity: (id: string, size?: string) => void;
+  removeFromCart: (id: string, size?: string) => void;
   clearCart: () => void;
 };
 
@@ -34,37 +40,60 @@ export function CartProvider({
 }) {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (item: Omit<CartItem, "quantity">) => {
-    setCart((prev) => {
-      const existing = prev.find((p) => p.id === item.id);
+  useEffect(() => {
+    const savedCart = localStorage.getItem("madcore-cart");
+
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("madcore-cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = (
+    product: Omit<CartItem, "quantity">,
+    quantity: number = 1
+  ) => {
+    setCart((prevCart) => {
+      const existing = prevCart.find(
+        (item) =>
+          item.id === product.id &&
+          item.size === product.size
+      );
 
       if (existing) {
-        return prev.map((p) =>
-          p.id === item.id
-            ? { ...p, quantity: p.quantity + 1 }
-            : p
+        return prevCart.map((item) =>
+          item.id === product.id &&
+          item.size === product.size
+            ? {
+                ...item,
+                quantity: item.quantity + quantity,
+              }
+            : item
         );
       }
 
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prevCart, { ...product, quantity }];
     });
   };
 
-  const increaseQuantity = (id: string) => {
+  const increaseQuantity = (id: string, size?: string) => {
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id
+        item.id === id && item.size === size
           ? { ...item, quantity: item.quantity + 1 }
           : item
       )
     );
   };
 
-  const decreaseQuantity = (id: string) => {
+  const decreaseQuantity = (id: string, size?: string) => {
     setCart((prev) =>
       prev
         .map((item) =>
-          item.id === id
+          item.id === id && item.size === size
             ? { ...item, quantity: item.quantity - 1 }
             : item
         )
@@ -72,9 +101,12 @@ export function CartProvider({
     );
   };
 
-  const removeFromCart = (id: string) => {
+  const removeFromCart = (id: string, size?: string) => {
     setCart((prev) =>
-      prev.filter((item) => item.id !== id)
+      prev.filter(
+        (item) =>
+          !(item.id === id && item.size === size)
+      )
     );
   };
 

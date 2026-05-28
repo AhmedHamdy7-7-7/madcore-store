@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const looks = [
   "/brand/look1.jpg",
@@ -8,51 +11,67 @@ const looks = [
 
 export default function LookbookPage() {
   return (
-    <main className="bg-black text-white min-h-screen pt-24">
+    <main className="bg-black text-white pt-28 min-h-screen">
 
       {/* Header */}
-      <section className="text-center py-20 px-6">
-        <p className="text-[#551993] uppercase tracking-[0.5em] mb-6">
+      <section className="text-center py-20 px-8">
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-[#551993] uppercase tracking-[0.45em] mb-6"
+        >
           Editorial
-        </p>
+        </motion.p>
 
-        <h1 className="text-7xl font-black uppercase">
+        <motion.h1
+          initial={{ opacity: 0, y: 35 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-6xl md:text-8xl font-black uppercase"
+        >
           LOOKBOOK
-        </h1>
+        </motion.h1>
 
-        <p className="text-zinc-400 max-w-2xl mx-auto mt-8 text-lg">
-          A visual transmission of shadow, rebellion,
-          and controlled disorder.
-        </p>
       </section>
 
-      {/* Gallery */}
-      <section className="max-w-7xl mx-auto px-8 pb-32 space-y-24">
+      {/* Images */}
+      <section className="max-w-7xl mx-auto px-8 pb-32 space-y-20">
 
         {looks.map((look, index) => (
-          <div
+          <motion.div
             key={index}
-            className="relative h-[85vh] overflow-hidden group"
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="relative h-[70vh] overflow-hidden group bg-zinc-950"
           >
+
             <Image
               src={look}
               alt={`Look ${index + 1}`}
               fill
-             className="object-contain group-hover:scale-100 transition duration-700"
+              sizes="100vw"
+              className="object-contain scale-100 group-hover:scale-105 transition-transform duration-700"
             />
 
-            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition duration-700" />
 
-            <div className="absolute bottom-12 left-12">
-              <p className="text-[#551993] uppercase tracking-[0.4em] text-sm mb-3">
-                Drop 01
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              viewport={{ once: true }}
+              className="absolute bottom-10 left-10"
+            >
+              <p className="text-[#551993] uppercase tracking-[0.4em] text-sm">
+                Look 0{index + 1}
               </p>
+            </motion.div>
 
-              <h2 className="text-5xl font-black uppercase">
-                Look {index + 1}
-              </h2>
-            </div>
-          </div>
+          </motion.div>
         ))}
 
       </section>
