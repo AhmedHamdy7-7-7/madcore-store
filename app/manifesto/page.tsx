@@ -96,7 +96,7 @@ export default function ManifestoPage() {
           className="relative h-[600px]"
         >
           <Image
-            src="/brand/look2.jpg"
+            src="/brand/ddd.jpg"
             alt="Disorder"
             fill
             className="object-cover"
