@@ -1,9 +1,10 @@
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 import { CartProvider } from "@/context/CartContext";
 
 export const metadata = {
-  title: "Madcore",
-  description: "Born From Chaos",
+  title: "MADCORE",
+  description: "Chaos With Intention",
 };
 
 export default function RootLayout({
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <CartProvider>
+          <Navbar />
           {children}
         </CartProvider>
       </body>

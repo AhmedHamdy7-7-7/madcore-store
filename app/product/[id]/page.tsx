@@ -1,103 +1,62 @@
-"use client";
-
 import Image from "next/image";
-import { use } from "react";
-import { useState } from "react";
-import { useCart } from "@/context/CartContext";
+import { notFound } from "next/navigation";
+import { products } from "@/data/products";
+import AddToCartButton from "@/components/AddToCartButton";
 
-const products = {
-  "void-hoodie": {
-    name: "VOID HOODIE",
-    price: 1299,
-    image: "/images/hoodie.jpg",
-  },
-  "chaos-tee": {
-    name: "CHAOS TEE",
-    price: 799,
-    image: "/images/tee.jpg",
-  },
-  "obsidian-fit": {
-    name: "OBSIDIAN FIT",
-    price: 999,
-    image: "/images/fit.jpg",
-  },
-};
-
-export default function ProductPage({
+export default async function ProductPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = use(params);
-  const { addToCart } = useCart();
+  const { id } = await params;
 
-  const [added, setAdded] = useState(false);
-
-  const product = products[id as keyof typeof products];
+  const product = products.find((p) => p.id === id);
 
   if (!product) {
-    return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center">
-        Product not found
-      </main>
-    );
+    notFound();
   }
 
-  const handleAddToCart = () => {
-    addToCart({
-      id,
-      name: product.name,
-      price: product.price,
-    });
-
-    setAdded(true);
-
-    setTimeout(() => {
-      setAdded(false);
-    }, 2000);
-  };
-
   return (
-    <main className="min-h-screen bg-black text-white px-6 md:px-10 py-20">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16">
+    <main className="bg-black text-white min-h-screen pt-32 px-8">
 
-        <div className="relative h-[400px] md:h-[600px] overflow-hidden bg-zinc-900">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+
+        {/* Product Image */}
+        <div className="relative h-[700px]">
           <Image
             src={product.image}
             alt={product.name}
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
         </div>
 
-        <div className="flex flex-col justify-center">
+        {/* Product Info */}
+        <div>
 
-          <p className="text-violet-400 uppercase tracking-[0.4em] mb-4">
-            Madcore Drop
+          <p className="text-[#551993] uppercase tracking-[0.4em] mb-4">
+            {product.status}
           </p>
 
-          <h1 className="text-4xl md:text-6xl font-black mb-6">
+          <h1 className="text-6xl font-black uppercase mb-6">
             {product.name}
           </h1>
 
-          <p className="text-zinc-400 mb-8">
-            Engineered for rebellion.
+          <p className="text-zinc-400 text-xl mb-8 leading-relaxed">
+            {product.description}
           </p>
 
-          <p className="text-2xl md:text-3xl mb-10">
-            EGP {product.price}
+          <p className="text-3xl font-bold mb-10">
+            {product.displayPrice}
           </p>
 
-          <button
-            onClick={handleAddToCart}
-            className="px-8 py-4 border border-violet-500 hover:bg-violet-600 transition uppercase tracking-widest"
-          >
-            {added ? "Added ✓" : "Add To Cart"}
-          </button>
+          <AddToCartButton product={product} />
 
         </div>
 
       </div>
+
     </main>
   );
 }
