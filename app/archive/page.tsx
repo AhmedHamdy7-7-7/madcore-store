@@ -51,7 +51,7 @@ export default function ArchivePage() {
                 alt={product.name}
                 fill
                 sizes="50vw"
-                className="object-contain scale-100 group-hover:scale-105 transition-transform duration-700"
+                className="object-cover brightness-110 contrast-125"
               />
 
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition duration-700" />

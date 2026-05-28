@@ -17,21 +17,20 @@ export default function CartPage() {
   );
 
   return (
-    <main className="min-h-screen bg-black text-white px-10 py-20">
+    <main className="min-h-screen bg-black text-white px-6 md:px-10 py-20">
       <div className="max-w-6xl mx-auto">
 
-        <h1 className="text-6xl font-black mb-16">
+        <h1 className="text-5xl md:text-6xl font-black mb-16">
           CART
         </h1>
 
         {cart.length === 0 ? (
           <div className="text-center py-32">
-
             <p className="text-violet-400 uppercase tracking-[0.4em] mb-6">
               THE VOID AWAITS
             </p>
 
-            <h2 className="text-5xl font-black mb-8">
+            <h2 className="text-4xl md:text-5xl font-black mb-8">
               NO CHAOS YET
             </h2>
 
@@ -45,19 +44,18 @@ export default function CartPage() {
             >
               Enter The Chaos
             </Link>
-
           </div>
         ) : (
           <>
             {cart.map((item) => (
               <div
                 key={`${item.id}-${item.size}`}
-                className="border border-zinc-800 p-8 mb-6"
+                className="border border-zinc-800 p-6 mb-6"
               >
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
 
                   <div>
-                    <h2 className="text-2xl">
+                    <h2 className="text-xl md:text-2xl">
                       {item.name}
                     </h2>
 
@@ -70,26 +68,24 @@ export default function CartPage() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-4">
 
                     <button
                       onClick={() =>
                         decreaseQuantity(item.id, item.size)
                       }
-                      className="px-4 py-2 border border-zinc-700 hover:border-violet-500 transition"
+                      className="px-4 py-2 border border-zinc-700"
                     >
                       -
                     </button>
 
-                    <span className="text-lg">
-                      {item.quantity}
-                    </span>
+                    <span>{item.quantity}</span>
 
                     <button
                       onClick={() =>
                         increaseQuantity(item.id, item.size)
                       }
-                      className="px-4 py-2 border border-zinc-700 hover:border-violet-500 transition"
+                      className="px-4 py-2 border border-zinc-700"
                     >
                       +
                     </button>
@@ -98,7 +94,7 @@ export default function CartPage() {
                       onClick={() =>
                         removeFromCart(item.id, item.size)
                       }
-                      className="text-red-400 ml-6 hover:text-red-300 transition"
+                      className="w-full md:w-auto text-red-400 hover:text-red-300 transition text-left md:text-center"
                     >
                       Remove
                     </button>
